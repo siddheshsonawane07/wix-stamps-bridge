@@ -109,8 +109,9 @@ Not in version 1: returns, stock syncing, splitting one order across parcels.
 
 | # | Step | Done when |
 |---|---|---|
-| 1 | Core logic with tests (this repo) | `npm test` passes |
-| 2 | Create the Wix CLI app; install on a free Wix test store | Dashboard page appears |
+| 1 | Core logic with tests (this repo) | `npm test` passes. **Done** |
+| 2 | Write the Wix CLI app (`app/`) | Type-checks and bundles. **Done**, not yet connected |
+| 2b | Connect it to a Wix app ID; install on a free Wix test store | Dashboard page appears |
 | 3 | Setup tab: upload sample, match columns, save per store | A real sample loads and every column is matched or chosen |
 | 4 | To ship tab and download | The file imports cleanly into Stamps.com |
 | 5 | Upload tab and fulfilment | A test order shows Fulfilled with a working tracking link |

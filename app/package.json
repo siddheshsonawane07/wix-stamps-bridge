@@ -1,0 +1,46 @@
+{
+  "name": "stamps-bridge-wix-app",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "astro": "astro",
+    "wix": "wix",
+    "predev": "npm --prefix .. run build",
+    "dev": "wix dev",
+    "prebuild": "npm --prefix .. run build",
+    "build": "wix build",
+    "preview": "wix preview",
+    "release": "wix release",
+    "generate": "wix generate",
+    "env": "wix env",
+    "typecheck": "npm --prefix .. run build && tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "wix-stamps-bridge": "file:..",
+    "@wix/dashboard": "^1.3.48",
+    "@wix/data": "^1.0.540",
+    "@wix/design-system": "^1.346.0",
+    "@wix/ecom": "^1.0.2634",
+    "@wix/essentials": "^1.0.15",
+    "@wix/sdk": "^1.21.18",
+    "@wix/wix-ui-icons-common": "^3.193.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/react": "^7.1.2",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "@wix/astro": "^3.1.0",
+    "@wix/astro-pages": "^3.0.1",
+    "@wix/astro-wix-hosting-adapter": "^3.0.4",
+    "@wix/cli": "^1.2.8",
+    "astro": "^7.4.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=24.18.0"
+  }
+}

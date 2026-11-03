@@ -38,8 +38,14 @@ matching each tracking number to its order, marking orders shipped and emailing 
 
 ## Status
 
-**Early.** This repo currently holds the core logic, with tests. It has no Wix dependency, so it can be
-tested on its own:
+**Built, not yet connected to Wix.** Both parts type-check, and the core has 29 passing tests.
+
+| Part | Where | State |
+|---|---|---|
+| Core logic | [`src/core/`](src/core) | Done, with tests. No Wix dependency |
+| Wix app | [`app/`](app) | Written and type-checked. Needs connecting to a Wix app ID, then testing on a test site. See [app/README.md](app/README.md) |
+
+Core modules:
 
 | Module | Does |
 |---|---|
@@ -49,9 +55,10 @@ tested on its own:
 | [`fields.ts`](src/core/fields.ts) | The Wix fields a column can use, with formats (weight units, country code or name, date) |
 | [`export.ts`](src/core/export.ts) | Builds the orders file for Stamps.com |
 | [`history.ts`](src/core/history.ts) | Reads the history export and decides which orders to mark shipped |
+| [`wix-order.ts`](src/core/wix-order.ts) | Converts a Wix eCom order into the app's shape |
 
-Next: the Wix CLI app (a dashboard page with **To ship**, **Upload shipments** and **Setup** tabs) that
-connects this logic to Wix eCom orders and fulfilments. See [the plan](docs/PLAN.md) and the
+The app is one dashboard page with **To ship**, **Upload shipments** and **Setup** tabs, plus backend endpoints
+that read orders, save each store's setup, and mark orders fulfilled. See [the plan](docs/PLAN.md) and the
 [illustrated plan (PDF)](docs/stamps-bridge-plan.pdf).
 
 ### Still to confirm with real files
@@ -61,13 +68,15 @@ connects this logic to Wix eCom orders and fulfilments. See [the plan](docs/PLAN
 
 ## Develop
 
+Core logic (repo root, Node 20 or later):
+
 ```bash
 npm install
 npm test          # vitest
 npm run typecheck
 ```
 
-Node 20 or later.
+Wix app (`app/`, Node 24.18 or later): see [app/README.md](app/README.md).
 
 ## Licence
 

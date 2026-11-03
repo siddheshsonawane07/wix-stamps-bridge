@@ -5,3 +5,7 @@ dist/
 .env
 .env.*
 docs/tools/.venv/
+app/.astro/
+app/.wix/
+app/.env.local
+app/.wrangler/

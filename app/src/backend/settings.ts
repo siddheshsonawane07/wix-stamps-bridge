@@ -1,0 +1,58 @@
+import { auth } from "@wix/essentials";
+import { collections, items } from "@wix/data";
+import type { HistoryLayout, OrderLayout } from "wix-stamps-bridge";
+import { collectionIdSuffix } from "../extensions/backend/data-collections/settings.ts";
+
+export interface StoreSettings {
+  orderLayout?: OrderLayout;
+  historyLayout?: HistoryLayout;
+  /** ISO date (YYYY-MM-DD). Orders placed before it are never sent to Stamps.com. */
+  startDate?: string;
+  defaultCarrier?: string;
+}
+
+const SETTINGS_ITEM_ID = "settings";
+
+const listDataCollections = auth.elevate(collections.listDataCollections);
+const getItem = auth.elevate(items.get);
+const saveItem = auth.elevate(items.save);
+
+let cachedCollectionId: string | undefined;
+
+/**
+ * Wix prefixes app collection IDs with the app's namespace ("@company/app-name/..."), which isn't known
+ * until the app is registered. Finding the collection by its suffix keeps that out of the code.
+ */
+async function settingsCollectionId(): Promise<string> {
+  if (cachedCollectionId) return cachedCollectionId;
+  const { collections: list } = await listDataCollections({ paging: { limit: 200 } });
+  const match = (list ?? []).find((c) => c._id?.endsWith(`/${collectionIdSuffix}`));
+  if (!match?._id) {
+    throw new Error(
+      "The Stamps Bridge settings collection isn't on this site yet. Check the site has the CMS added, then reinstall the app.",
+    );
+  }
+  cachedCollectionId = match._id;
+  return match._id;
+}
+
+export async function loadSettings(): Promise<StoreSettings> {
+  const item = await getItem(await settingsCollectionId(), SETTINGS_ITEM_ID);
+  if (!item) return {};
+  return {
+    orderLayout: item.orderLayout ?? undefined,
+    historyLayout: item.historyLayout ?? undefined,
+    startDate: item.startDate || undefined,
+    defaultCarrier: item.defaultCarrier || undefined,
+  };
+}
+
+export async function saveSettings(next: StoreSettings): Promise<StoreSettings> {
+  const merged = { ...(await loadSettings()), ...next };
+  await saveItem(await settingsCollectionId(), {
+    _id: SETTINGS_ITEM_ID,
+    title: "Stamps Bridge settings",
+    ...merged,
+  });
+  return merged;
+}
