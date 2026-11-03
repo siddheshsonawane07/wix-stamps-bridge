@@ -1,12 +1,12 @@
 import type { APIRoute } from "astro";
-import { errorMessage, json, readJson, rejectUnlessDashboardUser } from "../../backend/http.ts";
-import { fulfil, type ShipmentToFulfil } from "../../backend/orders.ts";
+import { errorMessage, json, readJson, rejectUnlessOrderManager } from "../../backend/http.ts";
+import { fulfil, MAX_ORDERS_PER_REQUEST, type ShipmentToFulfil } from "../../backend/orders.ts";
 import { loadSettings } from "../../backend/settings.ts";
 
 // Runs on every request; never built ahead of time.
 export const prerender = false;
 
-const MAX_SHIPMENTS = 500;
+const MAX_SHIPMENTS = MAX_ORDERS_PER_REQUEST;
 
 function validShipment(s: unknown): s is ShipmentToFulfil {
   const v = s as ShipmentToFulfil;
@@ -20,7 +20,7 @@ function validShipment(s: unknown): s is ShipmentToFulfil {
 
 /** Marks the confirmed orders shipped with their tracking numbers. */
 export const POST: APIRoute = async ({ request }) => {
-  const refused = await rejectUnlessDashboardUser();
+  const refused = await rejectUnlessOrderManager();
   if (refused) return refused;
   const body = await readJson<{ shipments?: unknown }>(request);
   const shipments = body?.shipments;

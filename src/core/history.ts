@@ -45,7 +45,14 @@ export function normaliseOrderNumber(value: string): string {
   return value.trim().replace(/^#/, "").trim();
 }
 
-export type PlanStatus = "ready" | "already_shipped" | "cancelled" | "not_matched" | "no_tracking" | "extra_label";
+export type PlanStatus =
+  | "ready"
+  | "already_shipped"
+  | "cancelled"
+  | "not_ready"
+  | "not_matched"
+  | "no_tracking"
+  | "extra_label";
 
 export interface PlannedShipment extends ShipmentRow {
   status: PlanStatus;
@@ -68,6 +75,7 @@ export function planFulfilments(rows: ShipmentRow[], orders: OrderState[]): Plan
     const base = { ...row, orderId: order.orderId };
     if (order.status === "cancelled") return { ...base, status: "cancelled" };
     if (order.status === "fulfilled") return { ...base, status: "already_shipped" };
+    if (order.status === "not_ready") return { ...base, status: "not_ready" };
     if (taken.has(order.orderId)) return { ...base, status: "extra_label" };
     taken.add(order.orderId);
     return { ...base, status: "ready" };

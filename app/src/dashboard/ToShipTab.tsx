@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Box, Button, Card, Loader, SectionHelper, Text } from "@wix/design-system";
-import { buildOrdersCsv, checkOrderLayout, type OrderForExport } from "wix-stamps-bridge";
-import { api, downloadText, today, type StoreSettings } from "./api.ts";
+import { buildOrdersCsv, checkOrderLayout } from "wix-stamps-bridge";
+import { api, downloadText, today, type OrdersToShip, type StoreSettings } from "./api.ts";
 import { SimpleTable } from "./table.tsx";
 
 export function ToShipTab({ settings }: { settings: StoreSettings }) {
-  const [data, setData] = useState<{ orders: OrderForExport[]; missingWeight: string[]; noAddress: string[] }>();
+  const [data, setData] = useState<OrdersToShip>();
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(false);
 
@@ -54,6 +54,11 @@ export function ToShipTab({ settings }: { settings: StoreSettings }) {
         <Box direction="vertical" gap="SP3">
           {setupMissing && <SectionHelper skin="warning">{setupMissing}</SectionHelper>}
           {error && <SectionHelper skin="danger">{error}</SectionHelper>}
+          {data?.truncated && (
+            <SectionHelper skin="warning">
+              {`Showing the oldest ${data.orders.length} orders. There are more: they'll appear here once these are shipped.`}
+            </SectionHelper>
+          )}
           {data && data.missingWeight.length > 0 && (
             <SectionHelper skin="warning">
               {`Orders with an item that has no weight: ${data.missingWeight.map((n) => `#${n}`).join(", ")}. Add weights in Wix, or enter them in Stamps.com.`}

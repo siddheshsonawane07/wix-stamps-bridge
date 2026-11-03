@@ -10,6 +10,7 @@ const STATUS: Record<PlanStatus, { label: string; skin: "success" | "neutralLigh
   ready: { label: "Ready", skin: "success" },
   already_shipped: { label: "Already shipped, skipped", skin: "neutralLight" },
   cancelled: { label: "Cancelled, skipped", skin: "warning" },
+  not_ready: { label: "Not paid or approved, skipped", skin: "warning" },
   not_matched: { label: "No matching order", skin: "neutralLight" },
   no_tracking: { label: "No tracking number", skin: "danger" },
   extra_label: { label: "Extra label: add by hand", skin: "warning" },
@@ -37,7 +38,7 @@ export function UploadTab({ settings }: { settings: StoreSettings }) {
     try {
       const rows = readShipments(text, settings.historyLayout);
       const numbers = rows.map((r) => r.orderNumber).filter(Boolean);
-      const { orders } = numbers.length ? await api.orderStates(numbers) : { orders: [] };
+      const orders = numbers.length ? await api.orderStates(numbers) : [];
       setPlan(planFulfilments(rows, orders));
     } catch (e) {
       setError((e as Error).message);
@@ -50,12 +51,16 @@ export function UploadTab({ settings }: { settings: StoreSettings }) {
     setBusy(true);
     setError(undefined);
     try {
-      const { results: done } = await api.fulfil(
+      const done = await api.fulfil(
         ready.map((p) => ({ orderNumber: p.orderNumber, trackingNumber: p.trackingNumber, carrier: p.carrier })),
       );
       setResults(done);
       const shipped = done.filter((r) => r.outcome === "shipped").length;
-      dashboard.showToast({ message: `${shipped} order${shipped === 1 ? "" : "s"} marked as shipped.`, type: "success" });
+      const failed = done.filter((r) => r.outcome === "failed").length;
+      const message =
+        `${shipped} order${shipped === 1 ? "" : "s"} marked as shipped.` +
+        (failed ? ` ${failed} failed: see the list below.` : "");
+      dashboard.showToast({ message, type: failed ? "error" : shipped ? "success" : "warning" });
       setPlan(undefined);
     } catch (e) {
       setError((e as Error).message);

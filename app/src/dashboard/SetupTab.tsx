@@ -7,6 +7,7 @@ import {
   diffHeaders,
   FIELD_BY_ID,
   historyLayoutFromExport,
+  isIsoDate,
   layoutFromSample,
   mergeLayouts,
   parseCsv,
@@ -16,7 +17,7 @@ import {
   type HistoryLayout,
   type OrderLayout,
 } from "wix-stamps-bridge";
-import { api, type StoreSettings } from "./api.ts";
+import { api, startOfLocalDay, type StoreSettings } from "./api.ts";
 import { FilePicker } from "./FilePicker.tsx";
 import { SimpleTable } from "./table.tsx";
 
@@ -249,7 +250,9 @@ export function SetupTab({ settings, onSaved }: { settings: StoreSettings; onSav
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setStartDate(e.target.value)}
               />
               <Text size="small" secondary>
-                Orders placed before this date are never sent to Stamps.com. Set it to the day you start using the app.
+                {startDate && !isIsoDate(startDate)
+                  ? "That isn't a real date. Write it like 2026-11-12."
+                  : "Orders placed before this date (midnight, your time) are never sent to Stamps.com. Set it to the day you start using the app."}
               </Text>
             </Box>
             <Box direction="vertical" gap="SP1">
@@ -267,8 +270,8 @@ export function SetupTab({ settings, onSaved }: { settings: StoreSettings; onSav
             </Box>
             <Box align="right">
               <Button
-                disabled={saving || !/^\d{4}-\d{2}-\d{2}$/.test(startDate)}
-                onClick={() => save({ startDate, defaultCarrier: carrier }, "Settings saved.")}
+                disabled={saving || !isIsoDate(startDate)}
+                onClick={() => save({ startDate, startAt: startOfLocalDay(startDate), defaultCarrier: carrier }, "Settings saved.")}
               >
                 Save settings
               </Button>

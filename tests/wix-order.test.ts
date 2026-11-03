@@ -77,6 +77,18 @@ describe("stateOfWixOrder", () => {
     expect(stateOfWixOrder(WIX_ORDER)?.status).toBe("not_fulfilled");
     expect(stateOfWixOrder({ ...WIX_ORDER, fulfillmentStatus: "PARTIALLY_FULFILLED" })?.status).toBe("fulfilled");
   });
+
+  it("never treats unpaid or unapproved orders as ready to ship", () => {
+    for (const change of [
+      { paymentStatus: "NOT_PAID" },
+      { paymentStatus: "PENDING" },
+      { status: "PENDING" },
+      { status: "INITIALIZED" },
+      { status: "REJECTED" },
+    ]) {
+      expect(stateOfWixOrder({ ...WIX_ORDER, ...change })?.status).toBe("not_ready");
+    }
+  });
 });
 
 describe("fulfilmentLineItems", () => {

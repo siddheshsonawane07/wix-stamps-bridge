@@ -103,15 +103,17 @@ export function fromWixOrder(order: WixOrderLike): OrderForExport | undefined {
   };
 }
 
-/** What the Upload tab needs to know about an order. Partly fulfilled orders count as shipped, so nothing ships twice. */
+/**
+ * What the Upload tab needs to know about an order. Only approved, paid, unfulfilled orders can be
+ * shipped. Partly fulfilled orders count as shipped, so nothing ships twice.
+ */
 export function stateOfWixOrder(order: WixOrderLike): OrderState | undefined {
   if (!order._id || !order.number) return undefined;
-  const status =
-    order.status === "CANCELED"
-      ? "cancelled"
-      : order.fulfillmentStatus === "NOT_FULFILLED"
-        ? "not_fulfilled"
-        : "fulfilled";
+  let status: OrderState["status"];
+  if (order.status === "CANCELED") status = "cancelled";
+  else if (order.fulfillmentStatus !== "NOT_FULFILLED") status = "fulfilled";
+  else if (order.status !== "APPROVED" || order.paymentStatus !== "PAID") status = "not_ready";
+  else status = "not_fulfilled";
   return { orderId: order._id, number: order.number, status };
 }
 

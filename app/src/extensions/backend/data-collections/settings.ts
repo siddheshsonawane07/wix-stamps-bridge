@@ -12,6 +12,7 @@ export default {
     { type: "OBJECT" as const, displayName: "Order file layout", key: "orderLayout" },
     { type: "OBJECT" as const, displayName: "History file layout", key: "historyLayout" },
     { type: "TEXT" as const, displayName: "Only include orders from", key: "startDate" },
+    { type: "TEXT" as const, displayName: "Start moment (UTC)", key: "startAt" },
     { type: "TEXT" as const, displayName: "Default carrier", key: "defaultCarrier" },
   ],
   displayField: "title",

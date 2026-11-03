@@ -21,4 +21,5 @@ export {
 } from "./core/history.js";
 export type { ShipmentRow, PlannedShipment, PlanStatus } from "./core/history.js";
 export { fromWixOrder, stateOfWixOrder, fulfilmentLineItems } from "./core/wix-order.js";
+export { isIsoDate, isIsoInstant } from "./core/dates.js";
 export type { WixOrderLike } from "./core/wix-order.js";

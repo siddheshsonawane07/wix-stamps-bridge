@@ -19,9 +19,29 @@ logic from the repo root (`wix-stamps-bridge`), which `npm run dev` and `npm run
 CSV reading, matching and building all run in the browser, using the core logic. The backend only talks to Wix.
 
 ### Security
-HTTP endpoints are public URLs. Every handler first checks the caller's token (`auth.getTokenInfo()`) and
-refuses anyone who isn't a Wix user signed in to the site's dashboard. Only after that does it make
-elevated calls. Inputs are validated and capped in size.
+
+HTTP endpoints are public URLs, so every handler first runs `rejectUnlessOrderManager()` in
+`src/backend/http.ts`:
+
+1. The token must be live (`active`) and belong to a Wix user signed in to the site's dashboard.
+   Visitors, members and other apps are refused.
+2. The user must be able to read the site's orders **themselves**. The app makes one small orders search
+   as the caller, without elevation, and refuses if Wix says no. Without this, any collaborator, whatever
+   their role, could use the app's elevated access to read customer addresses or mark orders shipped.
+   This check fails closed.
+
+After that, inputs are validated and capped (1,000 orders per request), and only then are elevated calls
+made. Requests use a bearer token rather than cookies, so they can't be forged from another site.
+
+Known and accepted:
+- **Collaborators who can read orders can also mark them shipped** through the app, even if their role
+  can't manage fulfilments in Wix itself. Give the shipper's role only what it needs.
+- **The orders file isn't protected against spreadsheet formulas.** A customer could type a name starting
+  with `=`. The file is meant for Stamps.com, which imports plain text. Escaping it would corrupt real data
+  (phone numbers start with `+`). Don't open it in Excel with macros enabled.
+- **Wix's own `@wix/dashboard` pulls in `zod` and `d3-color` versions with published advisories** (memory
+  use and a slow regex). These are upstream, run in the browser on trusted data, and are fixed by Wix
+  updating the package.
 
 ## Requirements
 
@@ -69,4 +89,6 @@ can't run until the app is connected. These need checking on a test site:
 - The order search filters (`status`, `paymentStatus`, `fulfillmentStatus`, `_createdDate`, `number`).
 - That the settings collection is found by its suffix and saves correctly.
 - Whether Wix emails the customer when the app adds tracking.
+- That the permission check's orders search works for a normal collaborator. Wix may only allow that call
+  for apps. If so, the check refuses everyone, and it needs another way to read the caller's permissions.
 - Downloading a file from inside the dashboard page.

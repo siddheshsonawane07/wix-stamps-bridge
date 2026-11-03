@@ -69,5 +69,6 @@ export interface HistoryLayout {
 export interface OrderState {
   orderId: string;
   number: string;
-  status: "not_fulfilled" | "fulfilled" | "cancelled";
+  /** "not_ready": not yet paid or approved, so it must not be marked shipped. */
+  status: "not_fulfilled" | "fulfilled" | "cancelled" | "not_ready";
 }

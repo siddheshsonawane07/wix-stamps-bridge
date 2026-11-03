@@ -9,6 +9,7 @@ const ORDERS: OrderState[] = [
   { orderId: "w-343", number: "10343", status: "not_fulfilled" },
   { orderId: "w-339", number: "10339", status: "fulfilled" },
   { orderId: "w-350", number: "10350", status: "cancelled" },
+  { orderId: "w-360", number: "10360", status: "not_ready" },
 ];
 
 describe("readShipments", () => {
@@ -55,10 +56,11 @@ describe("planFulfilments", () => {
         { line: 3, orderNumber: "10342", trackingNumber: "T2", carrier: "UPS", service: "" },
         { line: 4, orderNumber: "10342", trackingNumber: "T3", carrier: "UPS", service: "" },
         { line: 5, orderNumber: "10343", trackingNumber: "", carrier: "UPS", service: "" },
+        { line: 6, orderNumber: "10360", trackingNumber: "T4", carrier: "UPS", service: "" },
       ],
       ORDERS,
     );
-    expect(plan.map((p) => p.status)).toEqual(["cancelled", "ready", "extra_label", "no_tracking"]);
+    expect(plan.map((p) => p.status)).toEqual(["cancelled", "ready", "extra_label", "no_tracking", "not_ready"]);
   });
 });
 
