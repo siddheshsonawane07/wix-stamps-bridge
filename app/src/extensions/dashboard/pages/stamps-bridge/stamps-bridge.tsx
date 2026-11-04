@@ -28,7 +28,7 @@ export default function StampsBridgePage() {
     <WixDesignSystemProvider>
       <Page>
         <Page.Header
-          title="Stamps Bridge"
+          title="Ship by File"
           subtitle="Send paid orders to Stamps.com as a file, then upload the label history to mark them shipped."
         />
         <Page.Content>

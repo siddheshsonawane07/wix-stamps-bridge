@@ -6,7 +6,7 @@ export const collectionIdSuffix = "stamps-bridge-settings";
 
 export default {
   idSuffix: collectionIdSuffix,
-  displayName: "Stamps Bridge settings",
+  displayName: "Ship by File settings",
   fields: [
     { type: "TEXT" as const, displayName: "Name", key: "title" },
     { type: "OBJECT" as const, displayName: "Order file layout", key: "orderLayout" },

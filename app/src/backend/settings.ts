@@ -43,7 +43,7 @@ async function settingsCollectionId(): Promise<string> {
     if ((list ?? []).length < PAGE_SIZE) break;
   }
   throw new Error(
-    "The Stamps Bridge settings collection isn't on this site yet. Check the site has the CMS added, then reinstall the app.",
+    "The Ship by File settings collection isn't on this site yet. Check the site has the CMS added, then reinstall the app.",
   );
 }
 
@@ -63,7 +63,7 @@ export async function saveSettings(next: StoreSettings): Promise<StoreSettings> 
   const merged = { ...(await loadSettings()), ...next };
   await saveItem(await settingsCollectionId(), {
     _id: SETTINGS_ITEM_ID,
-    title: "Stamps Bridge settings",
+    title: "Ship by File settings",
     ...merged,
   });
   return merged;
