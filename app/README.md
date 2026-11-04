@@ -14,7 +14,6 @@ logic from the repo root (`wix-stamps-bridge`), which `npm run dev` and `npm run
 | `src/pages/api/order-states.ts` | Looks up the orders named in an uploaded history file |
 | `src/pages/api/fulfil.ts` | Marks confirmed orders fulfilled with tracking |
 | `src/backend/` | Wix order, fulfilment and settings calls, plus the caller check |
-| `src/extensions/backend/data-collections/` | The settings collection created on each site at install |
 
 CSV reading, matching and building all run in the browser, using the core logic. The backend only talks to Wix.
 
@@ -47,7 +46,8 @@ Known and accepted:
 
 - **Node 24.18 or later** (`nvm use` reads `.nvmrc`).
 - A Wix developer account.
-- Sites that install the app need **Wix Stores** and the **CMS** (the settings collection lives in the CMS).
+- Sites that install the app need **Wix Stores** and the **CMS**. On first use the app creates a `ShipByFileSettings`
+  collection in the CMS (admin-only) to hold the store's setup.
 
 ## Connect it to Wix (first time)
 
@@ -63,9 +63,10 @@ This code was written before the app was registered with Wix, so it has no `wix.
    `.env.local` is git-ignored.
 3. In the app dashboard at [manage.wix.com/account/custom-apps](https://manage.wix.com/account/custom-apps),
    open the app's **Permissions** page and add:
-   - **Read Orders** (`ECOM.READ_ORDERS`)
-   - **Manage Fulfillments** (`ECOM.MODIFY_FULFILLMENTS`)
-   - **Wix Data**: read and manage data collections and items
+   - **Read Orders** (`SCOPE.DC-STORES.READ-ORDERS`)
+   - **Manage Orders** (`SCOPE.DC-STORES.MANAGE-ORDERS`)
+   - **Manage Data Collections** (`SCOPE.DC-DATA.DATA-COLLECTIONS-MANAGE`)
+   - **Read Data Items** (`SCOPE.DC-DATA.READ`) and **Write Data Items** (`SCOPE.DC-DATA.WRITE`)
 4. Run it against a test site:
    ```bash
    npm install
@@ -87,7 +88,7 @@ The type check passes, and the bundles compile. Wix's final build step needs the
 can't run until the app is connected. These need checking on a test site:
 
 - The order search filters (`status`, `paymentStatus`, `fulfillmentStatus`, `_createdDate`, `number`).
-- That the settings collection is found by its suffix and saves correctly.
+- That the settings collection is created on first use and saves correctly.
 - Whether Wix emails the customer when the app adds tracking.
 - That the permission check's orders search works for a normal collaborator. Wix may only allow that call
   for apps. If so, the check refuses everyone, and it needs another way to read the caller's permissions.
