@@ -1,0 +1,19 @@
+h1|Ship your Wix orders with your own Stamps.com account. No paid connector in between.
+x1|Lots of online shops build their store on Wix, and print their shipping labels in Stamps.com.
+x2|But the two don't talk to each other. Wix has no built-in connection to Stamps.com, and Stamps.com doesn't list Wix among the stores it imports orders from.
+g1|So every order has to get from Wix into Stamps.com somehow, and every tracking number has to find its way back.
+a1|Today, the options cost money, or time.
+a2|A shipping platform like ShipStation connects to Wix, but it's another monthly subscription, and you print your labels there instead.
+a3|Another store platform can act as a go-between, with its own plan, and a paid Stamps.com app on top.
+a4|Or you retype every address by hand, and copy every tracking number back.
+i1|Ship by File takes a different route. Stamps.com already imports orders from a file, and exports printed labels to a file.
+i2|The app writes the first file, and reads the second.
+s1|You set it up once. Upload the sample file from Stamps.com, and the app keeps its columns exactly as they are.
+s2|Each column is matched to a Wix field from a fixed list. Anything it doesn't recognise, you choose yourself.
+s3|Then pick the date to start from, so older orders are never sent.
+t1|Each morning, the To ship tab lists every paid order waiting to go out.
+t2|One click downloads the file. Import it into Stamps.com, and print your labels the way you always do.
+u1|At the end of the day, export your print history from Stamps.com, and upload it here.
+u2|The app matches each tracking number to its order, and skips anything already shipped, cancelled, or unpaid.
+u3|Confirm, and your orders are marked as shipped, with tracking.
+c1|No subscription, nothing to host, and your Stamps.com routine stays the same. Ship by File is free.

@@ -1,0 +1,78 @@
+{
+  "h1": {
+    "text": "Ship your Wix orders with your own Stamps.com account. No paid connector in between.",
+    "seconds": 5.4
+  },
+  "x1": {
+    "text": "Lots of online shops build their store on Wix, and print their shipping labels in Stamps.com.",
+    "seconds": 5.63
+  },
+  "x2": {
+    "text": "But the two don't talk to each other. Wix has no built-in connection to Stamps.com, and Stamps.com doesn't list Wix among the stores it imports orders from.",
+    "seconds": 10.39
+  },
+  "g1": {
+    "text": "So every order has to get from Wix into Stamps.com somehow, and every tracking number has to find its way back.",
+    "seconds": 6.87
+  },
+  "a1": {
+    "text": "Today, the options cost money, or time.",
+    "seconds": 2.43
+  },
+  "a2": {
+    "text": "A shipping platform like ShipStation connects to Wix, but it's another monthly subscription, and you print your labels there instead.",
+    "seconds": 7.85
+  },
+  "a3": {
+    "text": "Another store platform can act as a go-between, with its own plan, and a paid Stamps.com app on top.",
+    "seconds": 6.83
+  },
+  "a4": {
+    "text": "Or you retype every address by hand, and copy every tracking number back.",
+    "seconds": 4.35
+  },
+  "i1": {
+    "text": "Ship by File takes a different route. Stamps.com already imports orders from a file, and exports printed labels to a file.",
+    "seconds": 8.45
+  },
+  "i2": {
+    "text": "The app writes the first file, and reads the second.",
+    "seconds": 2.84
+  },
+  "s1": {
+    "text": "You set it up once. Upload the sample file from Stamps.com, and the app keeps its columns exactly as they are.",
+    "seconds": 7.27
+  },
+  "s2": {
+    "text": "Each column is matched to a Wix field from a fixed list. Anything it doesn't recognise, you choose yourself.",
+    "seconds": 6.34
+  },
+  "s3": {
+    "text": "Then pick the date to start from, so older orders are never sent.",
+    "seconds": 3.84
+  },
+  "t1": {
+    "text": "Each morning, the To ship tab lists every paid order waiting to go out.",
+    "seconds": 3.95
+  },
+  "t2": {
+    "text": "One click downloads the file. Import it into Stamps.com, and print your labels the way you always do.",
+    "seconds": 6.57
+  },
+  "u1": {
+    "text": "At the end of the day, export your print history from Stamps.com, and upload it here.",
+    "seconds": 5.01
+  },
+  "u2": {
+    "text": "The app matches each tracking number to its order, and skips anything already shipped, cancelled, or unpaid.",
+    "seconds": 6.49
+  },
+  "u3": {
+    "text": "Confirm, and your orders are marked as shipped, with tracking.",
+    "seconds": 3.37
+  },
+  "c1": {
+    "text": "No subscription, nothing to host, and your Stamps.com routine stays the same. Ship by File is free.",
+    "seconds": 7.1
+  }
+}
